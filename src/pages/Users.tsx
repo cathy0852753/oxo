@@ -81,18 +81,20 @@ export default function Users() {
 
   return (
     <PageLayout>
-      <div style={{ marginBottom: 10 }}>
-        <Button type="primary" onClick={() => modalRef.current?.add()}>
-          新增人員
-        </Button>
+      <div style={{ padding: "20px 48px" }}>
+        <div style={{ marginBottom: 10 }}>
+          <Button type="primary" onClick={() => modalRef.current?.add()}>
+            新增人員
+          </Button>
+        </div>
+        <Table
+          columns={userCol}
+          dataSource={users}
+          pagination={false}
+          rowKey={"id"}
+          scroll={{ y: "calc(100vh - 250px)" }}
+        />
       </div>
-      <Table
-        columns={userCol}
-        dataSource={users}
-        pagination={false}
-        rowKey={"id"}
-        scroll={{ y: "calc(100vh - 250px)" }}
-      />
       <AddUserModal ref={modalRef} />
     </PageLayout>
   );

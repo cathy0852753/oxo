@@ -42,9 +42,10 @@ const PageLayout = (props: Props) => {
           items={items1}
           selectedKeys={[selectedKey]}
           onClick={(e) => navigate(`/${e.key}`)}
+          style={{ height: 60 }}
         />
       </Header>
-      <Layout style={{ height: "calc(100vh - 60px)", padding: "20px 48px" }}>
+      <Layout hasSider style={{ height: "calc(100vh - 60px)" }}>
         {children}
       </Layout>
     </Layout>
