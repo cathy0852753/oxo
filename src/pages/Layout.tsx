@@ -8,9 +8,9 @@ const { Header } = Layout;
 const items1 = [
   {
     key: "user",
-    label: <Typography.Link href="/user">使用者</Typography.Link>,
+    label: "使用者",
   },
-  { key: "card", label: <Typography.Link href="/card">卡片</Typography.Link> },
+  { key: "card", label: "織圖" },
 ];
 
 interface Props {
