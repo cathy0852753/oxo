@@ -1,0 +1,12 @@
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tsconfigPaths from 'vite-tsconfig-paths';
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react(), tsconfigPaths()],
+  server: {
+    host: '0.0.0.0',  // 讓其他設備也能存取
+    port: 5173        // 或你想指定的其他 port
+  }
+});

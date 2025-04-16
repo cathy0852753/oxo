@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "jsx": "react-jsx",
+    "moduleResolution": "Node",
+    "allowJs": true,
+    "checkJs": false,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".", // 根目錄
+    "paths": {
+      "@share/*": [
+        "share/*"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "declarations.d.ts",
+    "share/interfaces"
+  ],
+  "types": [
+    "node"
+  ],
+}
