@@ -240,6 +240,17 @@ const CardModal = forwardRef<modalStateRef, CardModalProps>((props, ref) => {
             {crochetPattern?.description}
           </div>
         </Form.Item>
+
+        <Form.Item label="">
+          <div style={{ textAlign: "center" }}>
+            <img
+              style={{ opacity: 0.3 }}
+              alt="example"
+              src={oxo}
+              height={150}
+            />
+          </div>
+        </Form.Item>
       </>
     );
   };
@@ -293,7 +304,7 @@ const CrochetPatternCard = ({
           alignItems: "center",
         }}
       >
-        <h3>{title}</h3>
+        <span>{title}</span>
         <Tooltip title={levlelTitle}>
           <div
             className="flash_dot"
@@ -315,11 +326,9 @@ const CrochetPatternCard = ({
       style={{
         width: 300,
       }}
-      cover={
-        <img style={{ opacity: 0.3 }} alt="example" src={oxo} height={150} />
-      }
       onClick={() => cardModalRef.current?.show(crochetPattern)}
-      extra={
+    >
+      <div className="card-action">
         <EditOutlined
           key="edit"
           onClick={(e) => {
@@ -327,8 +336,7 @@ const CrochetPatternCard = ({
             cardModalRef.current?.edit(crochetPattern);
           }}
         />
-      }
-    >
+      </div>
       <Meta
         title={buildTitle(crochetPattern.title, crochetPattern.difficulty)}
         description={
@@ -379,7 +387,7 @@ const CardPage = () => {
     return (
       <div
         key={tag}
-        className="card"
+        className="card-tag"
         style={{
           backgroundColor: selectTag == tag ? "#F2A490" : "#fafafa",
           border: selectTag == tag ? "1px solid #F2A490" : "",
@@ -395,7 +403,7 @@ const CardPage = () => {
     return (
       <div
         key={"add"}
-        className="card"
+        className="card-tag"
         style={{
           backgroundColor: "#fafafa",
           border: "1px dashed gray",

@@ -22,7 +22,7 @@
   }
 }
 
-.card {
+.card-tag {
   width: 180px;
   height: 30px;
   border-radius: 8px;
@@ -43,4 +43,23 @@
 
 .card-show > .ant-form-item {
   margin-bottom: 0px;
+}
+
+.card-action {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  display: none;
+}
+.ant-card:hover .card-action {
+  display: block;
+  opacity: 1;
+}
+
+.ant-card:hover .ant-card-meta {
+  opacity: 0.3;
+}
+
+.ant-card {
+  position: relative;
 }
