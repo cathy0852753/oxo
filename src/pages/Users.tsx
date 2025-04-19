@@ -18,11 +18,12 @@ import {
 } from "antd";
 import type { TableProps } from "antd";
 import dayjs from "dayjs";
-import { User, userData } from "@share/interfaces/user";
+
+import { User } from "@share/interfaces/user";
 import useUserStore from "../store/userStore";
 import PageLayout from "./Layout";
 
-const { Content } = Layout;
+import { userData } from "src/data/user";
 
 interface modalStateRef {
   add: () => void;
@@ -105,15 +106,19 @@ const AddUserModal = forwardRef<modalStateRef>((props, ref) => {
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [originUser, setOriginUser] = useState<User>();
+  const [title, setTitle] = useState("");
+
   const [form] = Form.useForm();
   useImperativeHandle(ref, () => {
     return {
       add() {
         setShowAddUserModal(true);
+        setTitle("新增人員");
       },
       edit(user) {
         setShowAddUserModal(true);
         setIsEdit(true);
+        setTitle("編輯人員");
         setOriginUser(user);
         form.setFieldsValue({
           user_name: user.name,
@@ -167,7 +172,7 @@ const AddUserModal = forwardRef<modalStateRef>((props, ref) => {
   return (
     <Modal
       open={showAddUserModal}
-      title="新增人員"
+      title={title}
       onCancel={handleCancel}
       onOk={handleOk}
       cancelText="取消"
