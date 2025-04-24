@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
-import { Layout, Menu, Typography } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
+import { MenuOutlined } from "@ant-design/icons";
+import { Layout } from "antd";
 
 import oxo from "../assets/oxo.svg";
 const { Header } = Layout;
@@ -15,10 +16,11 @@ const items1 = [
 
 interface Props {
   children: ReactNode;
+  onDrawerClick?: () => void;
 }
 
 const PageLayout = (props: Props) => {
-  const { children } = props;
+  const { children, onDrawerClick } = props;
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -35,8 +37,14 @@ const PageLayout = (props: Props) => {
           backgroundColor: "#ffffff",
           boxShadow: "0 1px 5px 2px lightgray",
           transform: " scale(1)",
+          padding: "0 25px",
         }}
       >
+        <MenuOutlined
+          className="menuIcon"
+          style={{ marginRight: 20 }}
+          onClick={onDrawerClick}
+        />
         <img
           src={oxo}
           alt="Logo"

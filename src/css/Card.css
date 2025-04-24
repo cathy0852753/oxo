@@ -48,8 +48,9 @@
 .card-action {
   position: absolute;
   right: 20px;
-  top: 15px;
+  top: 10px;
   display: none;
+  z-index: 99;
 }
 .ant-card:hover .card-action {
   display: block;
@@ -58,8 +59,66 @@
 
 .ant-card:hover .ant-card-meta {
   opacity: 0.3;
+  cursor: default;
 }
 
 .ant-card {
   position: relative;
+}
+
+.ant-drawer .ant-drawer-body {
+  padding: 12px 0;
+}
+
+.filter-group {
+  margin-bottom: 8px;
+}
+
+@media (max-height: 576px) {
+}
+@media (min-height: 576px) {
+  .menuIcon {
+    display: block;
+  }
+
+  .ant-layout-sider {
+    display: none;
+  }
+
+  .card-group {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+    gap: 30px;
+    min-width: 576px;
+    overflow-x: auto;
+  }
+}
+
+@media (min-height: 768px) {
+  .menuIcon {
+    display: none;
+  }
+
+  .ant-layout-sider {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    margin-top: 10px;
+  }
+
+  .card-group {
+    min-width: 850px;
+  }
+}
+
+@media (min-height: 992px) {
+}
+
+@media (min-height: 1200px) {
+}
+
+@media (min-height: 1600px) {
 }

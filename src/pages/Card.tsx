@@ -1,4 +1,5 @@
 import React, {
+  ChangeEvent,
   forwardRef,
   RefObject,
   useEffect,
@@ -8,7 +9,9 @@ import React, {
 } from "react";
 import { EditOutlined, PlusOutlined } from "@ant-design/icons";
 import {
+  Button,
   Card,
+  Drawer,
   Flex,
   Form,
   Input,
@@ -124,33 +127,29 @@ const CardModal = forwardRef<modalStateRef, CardModalProps>((props, ref) => {
         <Input />
       </Form.Item>
 
-      <Form.Item label="難易度" style={{ marginBottom: 0 }}>
-        <Space size={15}>
-          <Form.Item name="difficulty">
+      <Form.Item label="難易度" name="difficulty">
+        <Select
+          style={{ width: 150 }}
+          options={[
+            { label: difficultyText.beginner, value: "beginner" },
+            { label: difficultyText.intermediate, value: "intermediate" },
+            { label: difficultyText.advanced, value: "advanced" },
+          ]}
+        />
+      </Form.Item>
+
+      <Form.Item label="耗時" style={{ marginBottom: 0 }}>
+        <Space>
+          <Form.Item name="estimatedTime_1">
+            <InputNumber />
+          </Form.Item>
+          <Form.Item name="estimatedTime_2">
             <Select
-              style={{ width: 150 }}
               options={[
-                { label: difficultyText.beginner, value: "beginner" },
-                { label: difficultyText.intermediate, value: "intermediate" },
-                { label: difficultyText.advanced, value: "advanced" },
+                { label: "小時", value: "hour" },
+                { label: "分鐘", value: "minute" },
               ]}
             />
-          </Form.Item>
-
-          <Form.Item label="耗時" style={{ marginBottom: 0 }}>
-            <Space>
-              <Form.Item name="estimatedTime_1">
-                <InputNumber />
-              </Form.Item>
-              <Form.Item name="estimatedTime_2">
-                <Select
-                  options={[
-                    { label: "小時", value: "hour" },
-                    { label: "分鐘", value: "minute" },
-                  ]}
-                />
-              </Form.Item>
-            </Space>
           </Form.Item>
         </Space>
       </Form.Item>
@@ -324,18 +323,18 @@ const CrochetPatternCard = ({
       key={crochetPattern.id}
       hoverable
       style={{
-        width: 300,
+        width: 250,
       }}
       onClick={() => cardModalRef.current?.show(crochetPattern)}
     >
       <div className="card-action">
-        <EditOutlined
-          key="edit"
+        <Button
+          icon={<EditOutlined />}
           onClick={(e) => {
             e.stopPropagation();
             cardModalRef.current?.edit(crochetPattern);
           }}
-        />
+        ></Button>
       </div>
       <Meta
         title={buildTitle(crochetPattern.title, crochetPattern.difficulty)}
@@ -377,6 +376,10 @@ const CardPage = () => {
   } = useCrochetPatternStore();
   const defaultCategories: string[] = ["全部", "動物", "髮飾", "杯墊", "其他"];
   const [selectTag, setSelectTag] = useState("全部");
+  const [selectDifficulty, setSelectDifficulty] = useState("all");
+  const [searchText, setSearchText] = useState("");
+  const [open, setOpen] = useState(false);
+
   const cardModalRef = useRef<modalStateRef | null>(null);
 
   useEffect(() => {
@@ -418,31 +421,75 @@ const CardPage = () => {
     );
   };
 
-  const cardData = crochetPatterns.filter((data) =>
-    selectTag == defaultCategories[0]
-      ? true
-      : selectTag == defaultCategories[defaultCategories.length - 1]
-      ? !data.tags.some((item) => defaultCategories.includes(item))
-      : data.tags.includes(selectTag)
-  );
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchText(value.toLocaleLowerCase());
+  };
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  const cardData = crochetPatterns
+    .filter((data) =>
+      selectTag == defaultCategories[0]
+        ? true
+        : selectTag === defaultCategories[defaultCategories.length - 1]
+        ? !data.tags.some((item) => defaultCategories.includes(item))
+        : data.tags.includes(selectTag)
+    )
+    .filter((data) =>
+      selectDifficulty === "all" ? true : data.difficulty === selectDifficulty
+    )
+    .filter((data) =>
+      searchText === ""
+        ? true
+        : data.title.toLocaleLowerCase().includes(searchText)
+    );
 
   return (
-    <PageLayout>
-      <Sider
-        width={200}
-        style={{
-          background: "white",
-          display: "flex",
-          justifyContent: "center",
-          padding: 10,
-          marginTop: 8,
-        }}
-      >
+    <PageLayout onDrawerClick={showDrawer}>
+      <Sider width={200}>
         <AddButton />
         {defaultCategories.map((tag) => TagButton(tag))}
       </Sider>
-      <Content style={{ overflowY: "auto" }}>
-        <Flex wrap gap={30} align="flex-start" style={{ padding: "20px 28px" }}>
+      <Drawer
+        closable={false}
+        onClose={onClose}
+        open={open}
+        key={"sider"}
+        width={200}
+        placement={"left"}
+      >
+        <AddButton />
+        {defaultCategories.map((tag) => TagButton(tag))}
+      </Drawer>
+      <Content style={{ overflowY: "auto", padding: "20px 28px" }}>
+        <Space size={20} className="filter-group" style={{ marginBottom: 8 }}>
+          <div>
+            <span>摘要搜尋：</span>
+            <Input style={{ width: 150 }} onChange={handleSearch} allowClear />
+          </div>
+          <div>
+            <span>難易度篩選：</span>
+            <Select
+              style={{ width: 150 }}
+              defaultValue={["all"]}
+              options={[
+                { label: "全部", value: "all" },
+                { label: difficultyText.beginner, value: "beginner" },
+                { label: difficultyText.intermediate, value: "intermediate" },
+                { label: difficultyText.advanced, value: "advanced" },
+              ]}
+              onSelect={(value) => setSelectDifficulty(value)}
+            />
+          </div>
+        </Space>
+        <div className="card-group">
           {cardData.map((crochetPattern) => (
             <CrochetPatternCard
               key={crochetPattern.id}
@@ -451,7 +498,7 @@ const CardPage = () => {
               cardModalRef={cardModalRef}
             />
           ))}
-        </Flex>
+        </div>
       </Content>
       <CardModal
         ref={cardModalRef}

@@ -17,9 +17,16 @@ const AccountPage = () => {
         }}
       ></Sider>
       <Content style={{ overflowY: "auto" }}>
-        <Flex wrap gap={30} align="flex-start" style={{ padding: "20px 28px" }}>
+        <div
+          style={{
+            margin: "20px 28px",
+            backgroundColor: "white",
+            height: "calc(100% - 40px)",
+            borderRadius: 8,
+          }}
+        >
           <></>
-        </Flex>
+        </div>
       </Content>
     </PageLayout>
   );
